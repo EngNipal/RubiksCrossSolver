@@ -169,7 +169,45 @@ namespace RubiksCrossSolver
                     break;
                 case Turn.R2:
                     {
+                        // Углы красной грани 24-31 и 26-29
+                        buffer = res[24];
+                        res[24] = res[31];
+                        res[31] = buffer;
+                        buffer = res[26];
+                        res[26] = res[29];
+                        res[29] = buffer;
 
+                        // Рёбра красной грани 25-30 и 27-28
+                        buffer = res[25];
+                        res[25] = res[30];
+                        res[30] = buffer;
+                        buffer = res[27];
+                        res[27] = res[28];
+                        res[28] = buffer;
+
+                        // Углы верхние 2-42 и 18-37
+                        buffer = res[2];
+                        res[2] = res[42];
+                        res[42] = buffer;
+                        buffer = res[18];
+                        res[18] = res[37];
+                        res[37] = buffer;
+
+                        // Углы нижние 7-47 и 23-32
+                        buffer = res[7];
+                        res[7] = res[47];
+                        res[47] = buffer;
+                        buffer = res[23];
+                        res[23] = res[32];
+                        res[32] = buffer;
+
+                        // Рёбра 4-44 и 20-35
+                        buffer = res[4];
+                        res[4] = res[44];
+                        res[44] = buffer;
+                        buffer = res[20];
+                        res[20] = res[35];
+                        res[35] = buffer;
                     }
                     break;
                 case Turn.U:
