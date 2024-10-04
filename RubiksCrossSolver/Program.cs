@@ -3,13 +3,27 @@
     internal class Program
     {
         static void Main(string[] args)
-        {
-            var zobrist = new Zobrist(48, 6);
+        {            
             var scramble = new Turn[] { Turn.R };
             var rubiksCube = new RubiksCube(scramble);
-
             uint[] initialState = rubiksCube.GetCurrentState();
+            List<Position> solves = GetSolves(initialState);
+            PrintSolution(solves);
+        }
+
+        private static void PrintSolution(List<Position> solved)
+        {
+            foreach (var position in solved)
+            {
+                var solution = string.Join(", ", position.Turns);
+                Console.WriteLine(solution);
+            }
+        }
+
+        private static List<Position> GetSolves(uint[] initialState)
+        {
             int depth = 0;
+            var zobrist = new Zobrist(48, 6);
             var initial = new Position(depth, initialState);
             initial.SetHash(zobrist);
 
@@ -18,22 +32,23 @@
                 { initial.Hash, initial }
             };
 
-            var solved = new List<Position>();
-            while (depth < 9 || solved.Count == 0)
-            {            
-                foreach (var position in positions.Values.Where(x => x.Depth == depth))
+            var solves = new List<Position>();
+            while (depth < 9 && solves.Count == 0)
+            {
+                var deepPositions = positions.Values.Where(x => x.Depth == depth).ToList();
+                foreach (var position in deepPositions)
                 {
-                    var antiturn = GetAntiturn(lastTurn.Value);
+                    var antiturn = position.GetAntiturn();
                     foreach (Turn turn in Enum.GetValues(typeof(Turn)))
                     {
                         if (depth > 0 && turn == antiturn) continue;
                         Position newPosition = CreatePosition(zobrist, depth, position.State, turn);
                         if (positions.TryAdd(newPosition.Hash, newPosition))
                         {
-                            newPosition.Turns.Add(turn);
+                            newPosition.AddTurn(turn);
                             if (CrossIsSolved(newPosition.State))
                             {
-                                solved.Add(newPosition);
+                                solves.Add(newPosition);
                             }
                         }
                     }
@@ -42,14 +57,8 @@
                 depth++;
             }
 
-            foreach (var position in solved)
-            {
-                var solution = string.Join(", ", position.Turns);
-                Console.WriteLine(solution);
-            }
+            return solves;
         }
-
-        
 
         private static Position CreatePosition(Zobrist zobrist, int depth, uint[] state, Turn turn)
         {

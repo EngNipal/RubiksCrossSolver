@@ -12,6 +12,12 @@
             Hash = zobrist.Hash(State);
         }
 
+        public void AddTurn(Turn turn)
+        {
+            Turns ??= [];
+            Turns.Add(turn);
+        }
+
         public Turn? GetAntiturn()
         {
             return Turns?.Last() switch
