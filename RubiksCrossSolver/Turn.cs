@@ -1,6 +1,6 @@
 ﻿namespace RubiksCrossSolver
 {
-    public enum Turns
+    public enum Turn
     {
         R = 1,
         Rp,

@@ -19,7 +19,7 @@ namespace RubiksCrossSolver
             }
         }
 
-        public RubiksCube(Turns[] scramble) : this()
+        public RubiksCube(Turn[] scramble) : this()
         {
             foreach (var turn in scramble)
             {
@@ -82,7 +82,7 @@ namespace RubiksCrossSolver
 
         // TODO: Написать версию метода, которая принимает перехват кубика или их комбинацию + Turn,
         // переделывает Turn нужным образом, а затем вызывает основной MakeTurn с правильным Turn-ом.
-        public static uint[] GetStateByTurn(uint[] state, Turns turn)
+        public static uint[] GetStateByTurn(uint[] state, Turn turn)
         {
             // Белый              Оранжевый              Зелёный                    Красный                 Синий                    Жёлтый
             // 0 1 2 3 4 5 6 7   8 9 10 11 12 13 14 15   16 17 18 19 20 21 22 23   24 25 26 27 28 29 30 31  32 33 34 35 36 37 38 39  40 41 42 43 44 45 46 47
@@ -91,7 +91,7 @@ namespace RubiksCrossSolver
             uint buffer;
             switch (turn)
             {
-                case Turns.R:
+                case Turn.R:
                     {
                         // Углы красной грани
                         buffer = res[24];
@@ -129,7 +129,7 @@ namespace RubiksCrossSolver
                         res[35] = buffer;
                     }
                     break;
-                case Turns.Rp:
+                case Turn.Rp:
                     {
                         // Углы красной грани 24-29-31-26-24
                         buffer = res[24];
@@ -167,82 +167,82 @@ namespace RubiksCrossSolver
                         res[20] = buffer;
                     }
                     break;
-                case Turns.R2:
+                case Turn.R2:
                     {
 
                     }
                     break;
-                case Turns.U:
+                case Turn.U:
                     {
 
                     }
                     break;
-                case Turns.Up:
+                case Turn.Up:
                     {
 
                     }
                     break;
-                case Turns.U2:
+                case Turn.U2:
                     {
 
                     }
                     break;
-                case Turns.F:
+                case Turn.F:
                     {
 
                     }
                     break;
-                case Turns.Fp:
+                case Turn.Fp:
                     {
 
                     }
                     break;
-                case Turns.F2:
+                case Turn.F2:
                     {
 
                     }
                     break;
-                case Turns.L:
+                case Turn.L:
                     {
 
                     }
                     break;
-                case Turns.Lp:
+                case Turn.Lp:
                     {
 
                     }
                     break;
-                case Turns.L2:
+                case Turn.L2:
                     {
 
                     }
                     break;
-                case Turns.B:
+                case Turn.B:
                     {
 
                     }
                     break;
-                case Turns.Bp:
+                case Turn.Bp:
                     {
 
                     }
                     break;
-                case Turns.B2:
+                case Turn.B2:
                     {
 
                     }
                     break;
-                case Turns.D:
+                case Turn.D:
                     {
 
                     }
                     break;
-                case Turns.Dp:
+                case Turn.Dp:
                     {
 
                     }
                     break;
-                case Turns.D2:
+                case Turn.D2:
                     {
 
                     }
