@@ -1,15 +1,17 @@
-﻿namespace RubiksCrossSolver;
+﻿using System.Text;
+
+namespace RubiksCrossSolver;
 
 public class Position(int depth, uint[] state, List<Turn> turns)
 {
     public int Depth { get; private set; } = depth;
-    public ulong Hash { get; private set; }
+    public string Hash { get; private set; } = string.Empty;
     public uint[] State { get; private set; } = state;
     public List<Turn> Turns { get; private set; } = [.. turns];
 
-    public void SetHash(Zobrist zobrist)
+    public void SetHash()
     {
-        Hash = zobrist.Hash(State);
+        Hash = string.Join(string.Empty, State);
     }
 
     public void AddTurn(Turn turn)
@@ -19,7 +21,9 @@ public class Position(int depth, uint[] state, List<Turn> turns)
 
     public Turn? GetAntiturn()
     {
-        return Turns?.Last() switch
+        if (Turns.Count == 0) return null;
+
+        return Turns.Last() switch
         {
             Turn.R => Turn.Rp,
             Turn.Rp => Turn.R,
@@ -39,8 +43,31 @@ public class Position(int depth, uint[] state, List<Turn> turns)
             Turn.B => Turn.Bp,
             Turn.Bp => Turn.B,
             Turn.B2 => Turn.B2,
-            null => null,
             _ => throw new ArgumentOutOfRangeException(),
         };
+    }
+
+    public override string ToString()
+    {
+        const string separator = ", ";
+        var sb = new StringBuilder();
+        foreach (var t in Turns)
+        {
+            sb.Append(t);
+            sb.Append(separator);
+        }
+
+        return sb.ToString().Trim(separator.ToCharArray());
+    }
+
+    public bool IsEqualTo(Position other)
+    {
+        int i = 0;
+        while (i < other.State.Length && State[i] == other.State[i])
+        {
+            i++;
+        }
+
+        return i == other.State.Length;
     }
 }
