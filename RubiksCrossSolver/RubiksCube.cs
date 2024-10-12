@@ -690,17 +690,121 @@ namespace RubiksCrossSolver
                     break;
                 case Turn.D:
                     {
+                        // Углы жёлтой грани 40-42-47-45-40
+                        buffer = res[40];
+                        res[40] = res[45];
+                        res[45] = res[47];
+                        res[47] = res[42];
+                        res[42] = buffer;
 
+                        // Рёбра жёлтой грани 41-44-46-43-41
+                        buffer = res[41];
+                        res[41] = res[43];
+                        res[43] = res[46];
+                        res[46] = res[44];
+                        res[44] = buffer;
+
+                        // Углы первый набор 21-29-37-13-21
+                        buffer = res[21];
+                        res[21] = res[13];
+                        res[13] = res[37];
+                        res[37] = res[29];
+                        res[29] = buffer;
+
+                        // Углы второй набор 23-31-39-15-23
+                        buffer = res[23];
+                        res[23] = res[15];
+                        res[15] = res[39];
+                        res[39] = res[31];
+                        res[31] = buffer;
+
+                        // Рёбра 22-30-38-14-22
+                        buffer = res[22];
+                        res[22] = res[14];
+                        res[14] = res[38];
+                        res[38] = res[30];
+                        res[30] = buffer;
                     }
                     break;
                 case Turn.Dp:
                     {
+                        // Углы жёлтой грани 40-45-47-42-40
+                        buffer = res[40];
+                        res[40] = res[42];
+                        res[42] = res[47];
+                        res[47] = res[45];
+                        res[45] = buffer;
 
+                        // Рёбра жёлтой грани 41-43-46-44-41
+                        buffer = res[41];
+                        res[41] = res[44];
+                        res[44] = res[46];
+                        res[46] = res[43];
+                        res[43] = buffer;
+
+                        // Углы первый набор 21-13-37-29-21
+                        buffer = res[21];
+                        res[21] = res[29];
+                        res[29] = res[37];
+                        res[37] = res[13];
+                        res[13] = buffer;
+
+                        // Углы второй набор 23-15-39-31-23
+                        buffer = res[23];
+                        res[23] = res[31];
+                        res[31] = res[39];
+                        res[39] = res[15];
+                        res[15] = buffer;
+
+                        // Рёбра 22-14-38-30-22
+                        buffer = res[22];
+                        res[22] = res[30];
+                        res[30] = res[38];
+                        res[38] = res[14];
+                        res[14] = buffer;
                     }
                     break;
                 case Turn.D2:
                     {
+                        // Углы жёлтой грани 40-47 42-45
+                        buffer = res[40];
+                        res[40] = res[47];
+                        res[47] = buffer;
+                        buffer = res[42];
+                        res[42] = res[45];
+                        res[45] = buffer;
 
+                        // Рёбра жёлтой грани 41-46 43-44
+                        buffer = res[41];
+                        res[41] = res[46];
+                        res[46] = buffer;
+                        buffer = res[43];
+                        res[43] = res[44];
+                        res[44] = buffer;
+
+                        // Углы первый набор 21-37 13-29
+                        buffer = res[21];
+                        res[21] = res[37];
+                        res[37] = buffer;
+                        buffer = res[13];
+                        res[13] = res[29];
+                        res[29] = buffer;
+
+                        // Углы второй набор 23-39 15-31
+                        buffer = res[23];
+                        res[23] = res[39];
+                        res[39] = buffer;
+                        buffer = res[15];
+                        res[15] = res[31];
+                        res[31] = buffer;
+
+                        // Рёбра 22-38 14-30
+                        buffer = res[22];
+                        res[22] = res[38];
+                        res[38] = buffer;
+                        buffer = res[14];
+                        res[14] = res[30];
+                        res[30] = buffer;
                     }
                     break;
                 default: break;
