@@ -4,7 +4,11 @@ namespace RubiksCrossSolver
 {
     public sealed class RubiksCube
     {
+        /// <summary> Количество элементов на одной грани. </summary>
+        /// <remarks> Центр фиксирован, не перемещается и не учитывается. </remarks>
         private const int _elements = 8;
+
+        /// <summary> Количество цветов или граней </summary>
         private const int _colorAmount = 6;
         public RubiksCube()
         {
@@ -81,7 +85,7 @@ namespace RubiksCrossSolver
         }
 
         // TODO: Написать версию метода, которая принимает перехват кубика или их комбинацию + Turn,
-        // переделывает Turn нужным образом, а затем вызывает основной MakeTurn с правильным Turn-ом.
+        // переделывает Turn нужным образом, а затем вызывает основной GetStateByTurn с правильным Turn-ом.
         public static uint[] GetStateByTurn(uint[] state, Turn turn)
         {
             // Белый              Оранжевый              Зелёный                    Красный                 Синий                    Жёлтый
