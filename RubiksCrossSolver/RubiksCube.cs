@@ -36,7 +36,7 @@ namespace RubiksCrossSolver
             state.CopyTo(State, 0);
         }
 
-        public uint[] State { get; private set; } = new uint[_colorAmount * _elements];
+        private uint[] State { get; set; } = new uint[_colorAmount * _elements];
 
         public uint[] GetCurrentState()
         {
