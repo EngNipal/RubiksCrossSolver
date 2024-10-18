@@ -11,35 +11,35 @@ public class TurnTests
         // Arrange
         var scramble0 = new[] { Turn.D2, Turn.U2, Turn.R2, Turn.U2, Turn.F, Turn.D2, Turn.B, Turn.U2, Turn.F2, Turn.R2,
             Turn.B2, Turn.Up, Turn.F, Turn.L, Turn.D2, Turn.B, Turn.L, Turn.Bp, Turn.D, Turn.Rp, Turn.Up };
-        var expectedState0 = new uint[] { 4, 5, 2, 2, 1, 6, 4, 4, /**/ 5, 6, 2, 2, 6, 1, 5, 4, /**/ 5, 6, 1, 5, 6, 6, 5, 5, /**/
+        var expectedState0 = new byte[] { 4, 5, 2, 2, 1, 6, 4, 4, /**/ 5, 6, 2, 2, 6, 1, 5, 4, /**/ 5, 6, 1, 5, 6, 6, 5, 5, /**/
             3, 3, 3, 3, 3, 1, 1, 6, /**/ 1, 1, 6, 2, 1, 2, 4, 4, /**/ 3, 2, 2, 4, 4, 5, 3, 3 };
 
         var scramble1 = new[] { Turn.R, Turn.U, Turn.F };
-        var expectedState1 = new uint[] { 1, 1, 1, 1, 1, 2, 2, 6, /**/ 3, 3, 6, 2, 6, 2, 2, 5, /**/ 3, 3, 4, 3, 4, 6, 6, 4, /**/
+        var expectedState1 = new byte[] { 1, 1, 1, 1, 1, 2, 2, 6, /**/ 3, 3, 6, 2, 6, 2, 2, 5, /**/ 3, 3, 4, 3, 4, 6, 6, 4, /**/
             3, 5, 5, 3, 4, 3, 4, 4, /**/ 2, 2, 2, 1, 5, 1, 5, 5, /**/ 4, 4, 1, 6, 5, 6, 6, 5 };
 
         var scramble2 = new[] { Turn.L, Turn.D, Turn.B };
-        var expectedState2 = new uint[] { 4, 4, 3, 5, 1, 5, 1, 1, /**/ 1, 2, 2, 1, 2, 5, 5, 6, /**/ 1, 3, 3, 1, 3, 2, 2, 2, /**/
+        var expectedState2 = new byte[] { 4, 4, 3, 5, 1, 5, 1, 1, /**/ 1, 2, 2, 1, 2, 5, 5, 6, /**/ 1, 3, 3, 1, 3, 2, 2, 2, /**/
             4, 4, 6, 4, 6, 1, 3, 6, /**/ 4, 5, 5, 4, 5, 4, 6, 6, /**/ 3, 3, 3, 6, 6, 2, 2, 5 };
 
         var scramble3 = new[] { Turn.Rp, Turn.Up, Turn.Fp };
-        var expectedState3 = new uint[] { 5, 5, 5, 1, 1, 3, 4, 4, /**/ 6, 5, 1, 2, 1, 2, 2, 1, /**/ 2, 1, 1, 2, 3, 2, 3, 3, /**/
+        var expectedState3 = new byte[] { 5, 5, 5, 1, 1, 3, 4, 4, /**/ 6, 5, 1, 2, 1, 2, 2, 1, /**/ 2, 1, 1, 2, 3, 2, 3, 3, /**/
             3, 3, 1, 6, 4, 6, 4, 4, /**/ 4, 4, 4, 6, 5, 6, 5, 5, /**/ 5, 2, 2, 6, 3, 6, 6, 3 };
 
         var scramble4 = new[] { Turn.Lp, Turn.Dp, Turn.Bp };
-        var expectedState4 = new uint[] { 6, 2, 2, 3, 1, 3, 1, 1, /**/ 5, 2, 2, 5, 2, 5, 3, 3, /**/ 6, 3, 3, 6, 3, 4, 4, 4, /**/
+        var expectedState4 = new byte[] { 6, 2, 2, 3, 1, 3, 1, 1, /**/ 5, 2, 2, 5, 2, 5, 3, 3, /**/ 6, 3, 3, 6, 3, 4, 4, 4, /**/
             4, 4, 3, 4, 1, 5, 5, 1, /**/ 1, 1, 2, 5, 2, 5, 5, 2, /**/ 6, 6, 6, 6, 6, 1, 4, 4 };
 
         var scramble5 = new[] { Turn.R2, Turn.U2, Turn.F2 };
-        var expectedState5 = new uint[] { 6, 1, 1, 6, 1, 1, 6, 6, /**/ 4, 4, 4, 2, 4, 2, 2, 2, /**/ 5, 3, 3, 5, 3, 5, 5, 3, /**/
+        var expectedState5 = new byte[] { 6, 1, 1, 6, 1, 1, 6, 6, /**/ 4, 4, 4, 2, 4, 2, 2, 2, /**/ 5, 3, 3, 5, 3, 5, 5, 3, /**/
             2, 2, 2, 2, 4, 4, 4, 4, /**/ 3, 3, 5, 3, 5, 3, 5, 5, /**/ 1, 1, 6, 6, 1, 6, 6, 1 };
 
         var scramble6 = new[] { Turn.L2, Turn.D2, Turn.B2 };
-        var expectedState6 = new uint[] { 1, 6, 6, 6, 1, 6, 1, 1, /**/ 2, 2, 2, 4, 2, 4, 4, 4, /**/ 5, 3, 3, 5, 3, 5, 5, 3, /**/
+        var expectedState6 = new byte[] { 1, 6, 6, 6, 1, 6, 1, 1, /**/ 2, 2, 2, 4, 2, 4, 4, 4, /**/ 5, 3, 3, 5, 3, 5, 5, 3, /**/
             4, 4, 4, 4, 2, 2, 2, 2, /**/ 3, 3, 5, 3, 5, 3, 5, 5, /**/ 6, 6, 1, 6, 1, 1, 1, 6 };
 
         var scramble7 = new[] {Turn.L2, Turn.F2, Turn.D2, Turn.Bp };
-        var expectedState7 = new uint[] { 2, 2, 2, 6, 1, 6, 6, 1, /**/ 6, 2, 4, 1, 4, 1, 4, 4, /**/ 3, 3, 5, 3, 5, 5, 5, 3, /**/
+        var expectedState7 = new byte[] { 2, 2, 2, 6, 1, 6, 6, 1, /**/ 6, 2, 4, 1, 4, 1, 4, 4, /**/ 3, 3, 5, 3, 5, 5, 5, 3, /**/
             2, 4, 6, 2, 1, 2, 2, 1, /**/ 3, 3, 5, 5, 3, 5, 5, 3, /**/ 6, 6, 1, 6, 1, 4, 4, 4 };
 
 
@@ -78,7 +78,7 @@ public class TurnTests
     {
         // Arrange
         string scramble = "L2, B, F2, D2, Bp, R2, F2, D2, L2, U2, Fp, R, Fp, D, U2, Rp, Fp, Up, F, R2";
-        var expectedState = new uint[] { 6, 1, 2, 4, 3, 3, 2, 2, /**/ 2, 6, 4, 4, 4, 6, 3, 5, /**/ 1, 3, 1, 3, 1, 4, 2, 3, /**/
+        var expectedState = new byte[] { 6, 1, 2, 4, 3, 3, 2, 2, /**/ 2, 6, 4, 4, 4, 6, 3, 5, /**/ 1, 3, 1, 3, 1, 4, 2, 3, /**/
             5, 1, 5, 5, 5, 2, 1, 4, /**/ 6, 4, 3, 6, 5, 5, 2, 4, /**/ 1, 6, 1, 6, 2, 3, 5, 6 };
 
         // Act

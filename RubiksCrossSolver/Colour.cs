@@ -1,6 +1,6 @@
 ﻿namespace RubiksCrossSolver;
 
-public enum Colour : uint
+public enum Colour : byte
 {
     White = 1,
     Orange = 2,

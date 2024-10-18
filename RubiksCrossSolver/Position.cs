@@ -1,18 +1,23 @@
-﻿using System.Text;
+﻿using System.Numerics;
+using System.Text;
 
 namespace RubiksCrossSolver;
 
-public class Position(int depth, uint[] state, List<Turn> turns)
+public class Position
 {
-    public int Depth { get; private set; } = depth;
-    public string Hash { get; private set; } = string.Empty;
-    public uint[] State { get; private set; } = state;
-    public List<Turn> Turns { get; private set; } = [.. turns];
-
-    public void SetHash()
+    public Position(int depth, Colour[] state, List<Turn> turns)
     {
-        Hash = string.Join(string.Empty, State);
+        Depth = depth;
+        var bytedState = state.Select(x => (byte)x).ToArray();
+        Hash = BigInteger.Parse(string.Join(string.Empty, bytedState));
+        foreach (var turn in turns)
+        {
+            Turns.Add(turn);
+        }
     }
+    public int Depth { get; private set; }
+    public BigInteger Hash { get; private set; } = BigInteger.Zero;
+    public List<Turn> Turns { get; private set; } = [];
 
     public void AddTurn(Turn turn)
     {
@@ -58,16 +63,5 @@ public class Position(int depth, uint[] state, List<Turn> turns)
         }
 
         return sb.ToString().Trim(separator.ToCharArray());
-    }
-
-    public bool IsEqualTo(Position other)
-    {
-        int i = 0;
-        while (i < other.State.Length && State[i] == other.State[i])
-        {
-            i++;
-        }
-
-        return i == other.State.Length;
     }
 }

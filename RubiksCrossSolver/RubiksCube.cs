@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Numerics;
 using System.Text;
 
 namespace RubiksCrossSolver;
@@ -11,16 +12,17 @@ public sealed class RubiksCube
 
     /// <summary> Количество цветов или граней </summary>
     private const int _colorAmount = 6;
+    private Rotation _rotation = Rotation.None;
     public RubiksCube()
     {
         for (int i = 0; i < _elements; i++)
         {
-            State[i] = (uint)Colour.White;
-            State[i + _elements] = (uint)Colour.Orange;
-            State[i + _elements * 2] = (uint)Colour.Green;
-            State[i + _elements * 3] = (uint)Colour.Red;
-            State[i + _elements * 4] = (uint)Colour.Blue;
-            State[i + _elements * 5] = (uint)Colour.Yellow;
+            State[i] = (byte)Colour.White;
+            State[i + _elements] = (byte)Colour.Orange;
+            State[i + _elements * 2] = (byte)Colour.Green;
+            State[i + _elements * 3] = (byte)Colour.Red;
+            State[i + _elements * 4] = (byte)Colour.Blue;
+            State[i + _elements * 5] = (byte)Colour.Yellow;
         }
     }
 
@@ -36,18 +38,24 @@ public sealed class RubiksCube
     {
     }
 
-    public RubiksCube(ulong[] state)
+    public RubiksCube(byte[] state)
     {
         state.CopyTo(State, 0);
     }
 
-    private uint[] State { get; set; } = new uint[_colorAmount * _elements];
+    private byte[] State { get; set; } = new byte[_colorAmount * _elements];
 
-    public uint[] GetCurrentState()
+    public byte[] GetCurrentState()
     {
-        var state = new uint[_colorAmount * _elements];
+        var state = new byte[_colorAmount * _elements];
         State.CopyTo(state, 0);
         return state;
+    }
+
+    public Colour[] GetColourState()
+    {
+        Colour[] result = State.Select(x => (Colour)x).ToArray();
+        return result;
     }
 
     public Color[][] GetColoredState()
@@ -120,13 +128,22 @@ public sealed class RubiksCube
 
     // TODO: Написать версию метода, которая принимает перехват кубика или их комбинацию + Turn,
     // переделывает Turn нужным образом, а затем вызывает основной GetStateByTurn с правильным Turn-ом.
-    public static uint[] GetStateByTurn(uint[] state, Turn turn)
+
+    public static Colour[] GetStateByHash(BigInteger hash, Turn turn)
+    {
+        byte[] state = hash.ToString().ToCharArray().Select(x => byte.Parse(x.ToString())).ToArray();
+        var newState = GetStateByTurn(state, turn);
+        Colour[] result = newState.Select(x => (Colour)x).ToArray();
+        return result;
+    }
+
+    public static byte[] GetStateByTurn(byte[] state, Turn turn)
     {
         // Белый              Оранжевый              Зелёный                    Красный                 Синий                    Жёлтый
         // 0 1 2 3 4 5 6 7   8 9 10 11 12 13 14 15   16 17 18 19 20 21 22 23   24 25 26 27 28 29 30 31  32 33 34 35 36 37 38 39  40 41 42 43 44 45 46 47
-        var res = new uint[state.Length]; 
+        var res = new byte[state.Length];
         state.CopyTo(res, 0);
-        uint buffer;
+        byte buffer;
         switch (turn)
         {
             case Turn.R:

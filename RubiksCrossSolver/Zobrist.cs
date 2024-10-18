@@ -4,50 +4,48 @@
 /// <remarks> Смотри https://en.wikipedia.org/wiki/Zobrist_hashing </remarks>
 public class Zobrist
 {
-    private const ulong _defaultRandomString = 7080895258217026699;
-    private int _fiedlsAmount; // 48
-    private int _statesAmount; // 6        
-    private ulong[][] _hashTable;
-    public Zobrist(int fieldsAmount, int statesAmount)
+    private byte _fiedlsAmount; // 48
+    private byte _statesAmount; // 6        
+    private int[][] _hashTable;
+    public Zobrist(byte fieldsAmount, byte statesAmount)
     {
-        _hashTable = new ulong[fieldsAmount][];
+        _hashTable = new int[fieldsAmount][];
         _fiedlsAmount = fieldsAmount;
         _statesAmount = statesAmount;
         for (int i = 0; i < fieldsAmount; i++)
         {
-            _hashTable[i] = new ulong[statesAmount];
+            _hashTable[i] = new int[statesAmount];
             for (int j = 0; j < statesAmount; j++)
             {
                 _hashTable[i][j] = GetRandomBitString();
             }
         }
-    }
+    }    
 
-    public ulong Seed { get; private set; } = _defaultRandomString;
-
-    public ulong Hash(uint[] state)
+    public int Hash(byte[] state)
     {
         if (state.Length != _fiedlsAmount)
             throw new ArgumentException("Неверный размер поля", nameof(state));
 
-        ulong result = 0;
+        int result = 0;
         for (int i = 0; i < _fiedlsAmount; i++)
         {
-            ulong j = state[i] - 1;
+            byte j = (byte)(state[i] - 1);
             result ^= _hashTable[i][j];
         }
 
         return result;
     }
 
-    private ulong GetRandomBitString()
+    private int GetRandomBitString()
     {
-        const ulong _multiplicator = 91283962591;
-        var s = Seed;
+        const int _multiplicator = 14143;
+        var rnd = new Random();
+        var s = rnd.Next();
         s ^= s >> 11;
         s ^= s >> 13;
         s ^= s >> 17;
-        Seed = s;
+        s ^= s >> 23;
         return s * _multiplicator;
     }
 }
