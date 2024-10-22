@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using RubiksCrossSolver.SolveDto;
+using System.Numerics;
 
 namespace RubiksCrossSolver;
 
@@ -12,39 +13,14 @@ internal sealed class Solver
         _maxDepth = maxDepth;
     }
 
-    public List<Position>[] GetSolves(Colour[] initialState)
+    public CrossSolvesAggregator GetSolves(Colour[] initialState)
     {
         int depth = 0;
         var initial = new Position(depth, initialState, []);
-        var whiteSolves = new List<Position>();
-        var whiteWithPair = new List<Position>();
-        var orangeSolves = new List<Position>();
-        var orangeWithPair = new List<Position>();
-        var greenSolves = new List<Position>();
-        var greenWithPair = new List<Position>();
-        var redSolves = new List<Position>();
-        var redWithPair = new List<Position>();
-        var blueSolves = new List<Position>();
-        var blueWithPair = new List<Position>();
-        var yellowSolves = new List<Position>();
-        var yellowWithPair = new List<Position>();
+        var solves = new CrossSolvesAggregator(Enum.GetValues<Colour>());
         Dictionary<BigInteger, Position> positions = new() { { initial.Hash, initial } };
-        var solves = new[] { whiteSolves, orangeSolves, greenSolves, redSolves, blueSolves, yellowSolves,
-            whiteWithPair, orangeWithPair, greenWithPair, redWithPair, blueWithPair, yellowWithPair };
         while (depth < _maxDepth)
         {
-            bool whiteStop = whiteSolves.Count > 0;
-            bool orangeStop = orangeSolves.Count > 0;
-            bool greenStop = greenSolves.Count > 0;
-            bool redStop = redSolves.Count > 0;
-            bool blueStop = blueSolves.Count > 0;
-            bool yellowStop = yellowSolves.Count > 0;
-            bool whitePairStop = whiteWithPair.Count > 0;
-            bool orangePairStop = orangeWithPair.Count > 0;
-            bool greenPairStop = greenWithPair.Count > 0;
-            bool redPairStop = redWithPair.Count > 0;
-            bool bluePairStop = blueWithPair.Count > 0;
-            bool yellowPairStop = yellowWithPair.Count > 0;
             
             var deepPositions = positions.Values.Where(x => x.Depth == depth).ToList();
             foreach (var position in deepPositions)
@@ -65,54 +41,54 @@ internal sealed class Solver
                     bool redCross = RedCrossIsSolved(state);
                     bool blueCross = BlueCrossIsSolved(state);
                     bool yellowCross = YellowCrossIsSolved(state);
-                    if (!whiteStop && whiteCross)
+                    if (solves.Cross[Colour.White].Count == 0 && whiteCross)
                     {
-                        whiteSolves.Add(newPosition);
+                        solves.Cross[Colour.White].Solves.Add(newPosition);
                     }
-                    if (!orangeStop && orangeCross)
+                    if (solves.Cross[Colour.Orange].Count == 0 && orangeCross)
                     {
-                        orangeSolves.Add(newPosition);
+                        solves.Cross[Colour.Orange].Solves.Add(newPosition);
                     }
-                    if (!greenStop && greenCross)
+                    if (solves.Cross[Colour.Green].Count == 0 && greenCross)
                     {
-                        greenSolves.Add(newPosition);
+                        solves.Cross[Colour.Green].Solves.Add(newPosition);
                     }
-                    if (!redStop && redCross)
+                    if (solves.Cross[Colour.Red].Count == 0 && redCross)
                     {
-                        redSolves.Add(newPosition);
+                        solves.Cross[Colour.Red].Solves.Add(newPosition);
                     }
-                    if (!blueStop && blueCross)
+                    if (solves.Cross[Colour.Blue].Count == 0 && blueCross)
                     {
-                        blueSolves.Add(newPosition);
+                        solves.Cross[Colour.Blue].Solves.Add(newPosition);
                     }
-                    if (!yellowStop && yellowCross)
+                    if (solves.Cross[Colour.Yellow].Count == 0 && yellowCross)
                     {
-                        yellowSolves.Add(newPosition);
+                        solves.Cross[Colour.Yellow].Solves.Add(newPosition);
                     }
                     // ---
-                    if (!whitePairStop && whiteCross && WhitePairIsSolved(state))
+                    if (solves.CrossPair[Colour.White].Count == 0 && whiteCross && WhitePairIsSolved(state))
                     {
-                        whiteWithPair.Add(newPosition);
+                        solves.CrossPair[Colour.White].Solves.Add(newPosition);
                     }
-                    if (!orangePairStop && orangeCross && OrangePairIsSolved(state))
+                    if (solves.CrossPair[Colour.Orange].Count == 0 && orangeCross && OrangePairIsSolved(state))
                     {
-                        orangeWithPair.Add(newPosition);
+                        solves.CrossPair[Colour.Orange].Solves.Add(newPosition);
                     }
-                    if (!greenPairStop && greenCross && GreenPairIsSolved(state))
+                    if (solves.CrossPair[Colour.Green].Count == 0 && greenCross && GreenPairIsSolved(state))
                     {
-                        greenWithPair.Add(newPosition);
+                        solves.CrossPair[Colour.Green].Solves.Add(newPosition);
                     }
-                    if (!redPairStop && redCross && RedPairIsSolved(state))
+                    if (solves.CrossPair[Colour.Red].Count == 0 && redCross && RedPairIsSolved(state))
                     {
-                        redWithPair.Add(newPosition);
+                        solves.CrossPair[Colour.Red].Solves.Add(newPosition);
                     }
-                    if (!bluePairStop && blueCross && BluePairIsSolved(state))
+                    if (solves.CrossPair[Colour.Blue].Count == 0 && blueCross && BluePairIsSolved(state))
                     {
-                        blueWithPair.Add(newPosition);
+                        solves.CrossPair[Colour.Blue].Solves.Add(newPosition);
                     }
-                    if (!yellowPairStop && yellowCross && YellowPairIsSolved(state))
+                    if (solves.CrossPair[Colour.Yellow].Count == 0 && yellowCross && YellowPairIsSolved(state))
                     {
-                        yellowWithPair.Add(newPosition);
+                        solves.CrossPair[Colour.Yellow].Solves.Add(newPosition);
                     }
                 }
             }

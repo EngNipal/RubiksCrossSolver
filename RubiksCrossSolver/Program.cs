@@ -1,4 +1,6 @@
-﻿namespace RubiksCrossSolver;
+﻿using RubiksCrossSolver.SolveDto;
+
+namespace RubiksCrossSolver;
 
 internal class Program
 {
@@ -14,17 +16,26 @@ internal class Program
         var rubiksCube = new RubiksCube(scramble);
         Colour[] initialState = rubiksCube.GetColourState();
         Solver solver = new(48, 6, 7);
-        List<Position>[] solves = solver.GetSolves(initialState);
+        CrossSolvesAggregator solves = solver.GetSolves(initialState);
         PrintSolution(solves);
     }
 
-    private static void PrintSolution(List<Position>[] solves)
+    private static void PrintSolution(CrossSolvesAggregator solves)
     {
-        for (int i = 0; i < solves.Length; i++)
+        foreach (var solve in solves.Cross)
         {
-            string colorName = ColorName(i);
-            Console.WriteLine($"Решения для {colorName} креста:");
-            foreach (var position in solves[i])
+            Console.WriteLine($"Решения для {ColorName(solve.Key)} креста:");
+            foreach (var position in solve.Value.Solves)
+            {
+                var solution = string.Join(", ", position.Turns);
+                Console.WriteLine(solution);
+            }
+        }
+
+        foreach (var solve in solves.CrossPair)
+        {
+            Console.WriteLine($"Решения для {ColorName(solve.Key)} креста с парой:");
+            foreach (var position in solve.Value.Solves)
             {
                 var solution = string.Join(", ", position.Turns);
                 Console.WriteLine(solution);
@@ -32,23 +43,17 @@ internal class Program
         }
     }
 
-    private static string ColorName(int i)
+    private static string ColorName(Colour colour)
     {
-        string res = i switch
+        string res = colour switch
         {
-            0 => "белого",
-            1 => "оранжевого",
-            2 => "зелёного",
-            3 => "красного",
-            4 => "синего",
-            5 => "жёлтого",
-            6 => "белого с парой",
-            7 => "оранжевого с парой",
-            8 => "зелёного с парой",
-            9 => "красного с парой",
-            10 => "синего с парой",
-            11 => "жёлтого с парой",
-            _ => throw new ArgumentOutOfRangeException(nameof(i)),
+            Colour.White => "белого",
+            Colour.Orange => "оранжевого",
+            Colour.Green => "зелёного",
+            Colour.Red => "красного",
+            Colour.Blue => "синего",
+            Colour.Yellow => "жёлтого",
+            _ => throw new ArgumentOutOfRangeException(nameof(colour)),
         };
         return res;
     }
