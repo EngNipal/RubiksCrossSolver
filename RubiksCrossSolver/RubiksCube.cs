@@ -8,27 +8,28 @@ public sealed class RubiksCube
 {
     /// <summary> Количество элементов на одной грани. </summary>
     /// <remarks> Центр фиксирован, не перемещается и не учитывается. </remarks>
-    private const int _elements = 8;
+    private const int elements = 8;
 
     /// <summary> Количество цветов или граней </summary>
-    private const int _colorAmount = 6;
+    private const int colorAmount = 6;
     private Rotation _rotation = Rotation.None;
-    public RubiksCube()
+
+    private RubiksCube()
     {
-        for (int i = 0; i < _elements; i++)
+        for (var i = 0; i < elements; i++)
         {
             State[i] = (byte)Colour.White;
-            State[i + _elements] = (byte)Colour.Orange;
-            State[i + _elements * 2] = (byte)Colour.Green;
-            State[i + _elements * 3] = (byte)Colour.Red;
-            State[i + _elements * 4] = (byte)Colour.Blue;
-            State[i + _elements * 5] = (byte)Colour.Yellow;
+            State[i + elements] = (byte)Colour.Orange;
+            State[i + elements * 2] = (byte)Colour.Green;
+            State[i + elements * 3] = (byte)Colour.Red;
+            State[i + elements * 4] = (byte)Colour.Blue;
+            State[i + elements * 5] = (byte)Colour.Yellow;
         }
     }
 
     public RubiksCube(Turn[] scramble) : this()
     {
-        foreach (var turn in scramble)
+        foreach (Turn turn in scramble)
         {
             State = GetStateByTurn(State, turn);
         }
@@ -43,11 +44,11 @@ public sealed class RubiksCube
         state.CopyTo(State, 0);
     }
 
-    private byte[] State { get; set; } = new byte[_colorAmount * _elements];
+    private byte[] State { get; set; } = new byte[colorAmount * elements];
 
     public byte[] GetCurrentState()
     {
-        var state = new byte[_colorAmount * _elements];
+        var state = new byte[colorAmount * elements];
         State.CopyTo(state, 0);
         return state;
     }
@@ -60,7 +61,7 @@ public sealed class RubiksCube
 
     public Color[][] GetColoredState()
     {
-        var result = new Color[_colorAmount][];
+        var result = new Color[colorAmount][];
         result[0] = GetSideByColor(KnownColor.White);
         result[1] = GetSideByColor(KnownColor.Orange);
         result[2] = GetSideByColor(KnownColor.Green);
@@ -72,11 +73,11 @@ public sealed class RubiksCube
 
     public Color[] GetSideByColor(KnownColor color)
     {
-        var result = new Color[_elements];
-        int offset = GetOffset(color);
-        for (int i = 0; i < _elements; i++)
+        var result = new Color[elements];
+        var offset = GetOffset(color);
+        for (var i = 0; i < elements; i++)
         {
-            var kc = ConvertToKnownColor((Colour)State[i + offset]);
+            KnownColor kc = ConvertToKnownColor((Colour)State[i + offset]);
             result[i] = Color.FromKnownColor(kc);
         }
 
@@ -86,16 +87,16 @@ public sealed class RubiksCube
     public override string ToString()
     {
         var sb = new StringBuilder();
-        int i = 0;
+        var i = 0;
         foreach (var item in State)
         {
             sb.Append(item);
             i++;
-            if (i % _elements == 3 || i % _elements == 5)
+            if (i % elements == 3 || i % elements == 5)
             {
                 sb.Append('-');
             }
-            else if (i % _elements == 0 && i != _elements * _colorAmount)
+            else if (i % elements == 0 && i != elements * colorAmount)
             {
                 sb.Append(" || ");
             }
@@ -106,8 +107,8 @@ public sealed class RubiksCube
 
     private static Turn[] Parse(string scramble)
     {
-        var result = scramble.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-            .Select(x => Enum.Parse<Turn>(x))
+        Turn[] result = scramble.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(Enum.Parse<Turn>)
             .ToArray();
         return result;
     }
@@ -131,13 +132,13 @@ public sealed class RubiksCube
 
     public static Colour[] GetStateByHash(BigInteger hash, Turn turn)
     {
-        byte[] state = hash.ToString().ToCharArray().Select(x => byte.Parse(x.ToString())).ToArray();
+        var state = hash.ToString().ToCharArray().Select(x => byte.Parse(x.ToString())).ToArray();
         var newState = GetStateByTurn(state, turn);
         Colour[] result = newState.Select(x => (Colour)x).ToArray();
         return result;
     }
 
-    public static byte[] GetStateByTurn(byte[] state, Turn turn)
+    private static byte[] GetStateByTurn(byte[] state, Turn turn)
     {
         // Белый              Оранжевый              Зелёный                    Красный                 Синий                    Жёлтый
         // 0 1 2 3 4 5 6 7   8 9 10 11 12 13 14 15   16 17 18 19 20 21 22 23   24 25 26 27 28 29 30 31  32 33 34 35 36 37 38 39  40 41 42 43 44 45 46 47
@@ -872,11 +873,11 @@ public sealed class RubiksCube
         return color switch
         {
             KnownColor.White => 0,
-            KnownColor.Orange => _elements,
-            KnownColor.Green => _elements * 2,
-            KnownColor.Red => _elements * 3,
-            KnownColor.Blue => _elements * 4,
-            KnownColor.Yellow => _elements * 5,
+            KnownColor.Orange => elements,
+            KnownColor.Green => elements * 2,
+            KnownColor.Red => elements * 3,
+            KnownColor.Blue => elements * 4,
+            KnownColor.Yellow => elements * 5,
             _ => throw new ArgumentException("Передан неподдерживаемый цвет", nameof(color)),
         };
     }

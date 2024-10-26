@@ -44,23 +44,23 @@ public class TurnTests
 
 
         // Act
-        var rubiksCube0 = new RubiksCube(scramble0);
-        var rubiksCube1 = new RubiksCube(scramble1);
-        var rubiksCube2 = new RubiksCube(scramble2);
-        var rubiksCube3 = new RubiksCube(scramble3);
-        var rubiksCube4 = new RubiksCube(scramble4);
-        var rubiksCube5 = new RubiksCube(scramble5);
-        var rubiksCube6 = new RubiksCube(scramble6);
-        var rubiksCube7 = new RubiksCube(scramble7);
+        var cube0 = new RubiksCube(scramble0);
+        var cube1 = new RubiksCube(scramble1);
+        var cube2 = new RubiksCube(scramble2);
+        var cube3 = new RubiksCube(scramble3);
+        var cube4 = new RubiksCube(scramble4);
+        var cube5 = new RubiksCube(scramble5);
+        var cube6 = new RubiksCube(scramble6);
+        var cube7 = new RubiksCube(scramble7);
 
-        var resultState0 = rubiksCube0.GetCurrentState();
-        var resultState1 = rubiksCube1.GetCurrentState();
-        var resultState2 = rubiksCube2.GetCurrentState();
-        var resultState3 = rubiksCube3.GetCurrentState();
-        var resultState4 = rubiksCube4.GetCurrentState();
-        var resultState5 = rubiksCube5.GetCurrentState();
-        var resultState6 = rubiksCube6.GetCurrentState();
-        var resultState7 = rubiksCube7.GetCurrentState();
+        var resultState0 = cube0.GetCurrentState();
+        var resultState1 = cube1.GetCurrentState();
+        var resultState2 = cube2.GetCurrentState();
+        var resultState3 = cube3.GetCurrentState();
+        var resultState4 = cube4.GetCurrentState();
+        var resultState5 = cube5.GetCurrentState();
+        var resultState6 = cube6.GetCurrentState();
+        var resultState7 = cube7.GetCurrentState();
 
         // Assert
         Assert.Equal(expectedState0, resultState0);
@@ -77,13 +77,13 @@ public class TurnTests
     public void MakeStringScrambleShouldReturnCorrectState()
     {
         // Arrange
-        string scramble = "L2, B, F2, D2, Bp, R2, F2, D2, L2, U2, Fp, R, Fp, D, U2, Rp, Fp, Up, F, R2";
+        const string scramble = "L2, B, F2, D2, Bp, R2, F2, D2, L2, U2, Fp, R, Fp, D, U2, Rp, Fp, Up, F, R2";
         var expectedState = new byte[] { 6, 1, 2, 4, 3, 3, 2, 2, /**/ 2, 6, 4, 4, 4, 6, 3, 5, /**/ 1, 3, 1, 3, 1, 4, 2, 3, /**/
             5, 1, 5, 5, 5, 2, 1, 4, /**/ 6, 4, 3, 6, 5, 5, 2, 4, /**/ 1, 6, 1, 6, 2, 3, 5, 6 };
 
         // Act
-        var rubiksCube = new RubiksCube(scramble);
-        var resultState = rubiksCube.GetCurrentState();
+        var cube = new RubiksCube(scramble);
+        var resultState = cube.GetCurrentState();
 
         // Assert
         Assert.Equal(expectedState, resultState);

@@ -10,13 +10,13 @@ public class Position
         Depth = depth;
         var bytedState = state.Select(x => (byte)x).ToArray();
         Hash = BigInteger.Parse(string.Join(string.Empty, bytedState));
-        foreach (var turn in turns)
+        foreach (Turn turn in turns)
         {
             Turns.Add(turn);
         }
     }
     public int Depth { get; private set; }
-    public BigInteger Hash { get; private set; } = BigInteger.Zero;
+    public BigInteger Hash { get; private set; }
     public List<Turn> Turns { get; private set; } = [];
 
     public void AddTurn(Turn turn)
@@ -24,7 +24,7 @@ public class Position
         Turns.Add(turn);
     }
 
-    public Turn? GetAntiturn()
+    /*public Turn? GetAntiturn()
     {
         if (Turns.Count == 0) return null;
 
@@ -50,13 +50,13 @@ public class Position
             Turn.B2 => Turn.B2,
             _ => throw new ArgumentOutOfRangeException(),
         };
-    }
+    }*/
 
     public override string ToString()
     {
         const string separator = ", ";
         var sb = new StringBuilder();
-        foreach (var t in Turns)
+        foreach (Turn t in Turns)
         {
             sb.Append(t);
             sb.Append(separator);
