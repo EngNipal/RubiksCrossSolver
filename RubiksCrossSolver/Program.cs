@@ -1,4 +1,5 @@
-﻿using RubiksCrossSolver.SolveDto;
+﻿using System.Diagnostics;
+using RubiksCrossSolver.SolveDto;
 
 namespace RubiksCrossSolver;
 
@@ -6,6 +7,7 @@ internal class Program
 {
     private static void Main()
     {
+        var sw = Stopwatch.StartNew();
         //string scramble = "L2, B, F2, D2, Bp, R2, F2, D2, L2, U2, Fp, R, Fp, D, U2, Rp, Fp, Up, F, R2";
         //string scramble = "L2, F2, D, R2, U, F2, U2, B, Lp, Rp, B2, Dp, Fp, U2, Fp, L2";
         //string scramble = "F2, L, U2, F2, L2, D2, U2, B2, L, B, F, U, R, F, Up, Rp, B, D2, L2, U";
@@ -15,11 +17,11 @@ internal class Program
         Console.WriteLine("Скрамбл: " + scramble);
         var cube = new RubiksCube(scramble);
         Colour[] initialState = cube.GetColourState();
-        Solver solver = new(48, 6, 6);
+        Solver solver = new(maxDepth: 6);
         CrossSolvesAggregator solves = solver.GetSolves(initialState);
+        sw.Stop();
+        Console.WriteLine(sw.Elapsed);
         PrintSolution(solves);
-        var qqq = new Dictionary<string, int>();
-        qqq.TryAdd("aaa", 1);
     }
 
     private static void PrintSolution(CrossSolvesAggregator solves)
@@ -27,9 +29,9 @@ internal class Program
         foreach (KeyValuePair<Colour, CrossSolveDto> solve in solves.Cross)
         {
             Console.WriteLine($"Решения для {ColorName(solve.Key)} креста:");
-            foreach (Position position in solve.Value.Solves)
+            foreach (Position position in solve.Value.GetSolves())
             {
-                var solution = string.Join(", ", position.Turns);
+                var solution = string.Join(", ", position.GetTurns());
                 Console.WriteLine(solution);
             }
         }
@@ -37,7 +39,7 @@ internal class Program
         foreach (KeyValuePair<Colour, CrossPairSolveDto> solve in solves.CrossPair)
         {
             Console.WriteLine($"Решения для {ColorName(solve.Key)} креста с парой:");
-            foreach (var solution in solve.Value.Solves.Select(position => string.Join(", ", position.Turns)))
+            foreach (var solution in solve.Value.GetSolves().Select(position => string.Join(", ", position.GetTurns())))
             {
                 Console.WriteLine(solution);
             }
